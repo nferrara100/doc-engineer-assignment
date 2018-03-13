@@ -21,10 +21,12 @@ based [DocSearch website](https://community.algolia.com/docsearch/).
 There's a skeleton command that takes care of the interfacing with middleman and is already looping through doc pages only.
 This middleman command can be run via the following bash command `bundle exec middleman algolia` from the docs directory.
 
-**Your goal**: complete this middle command to make it index the documentation content into Algolia.
+**Your goal**: complete this command to make it index the documentation content into Algolia.
 Each page must be split in several records using the method explained in the
 [following blog post](https://blog.algolia.com/how-to-build-a-helpful-search-for-technical-documentation-the-laravel-example/).
 To do the split you will need to use an html parser library.
+
+You may have to start the documentation website on your machine as part of this assignment too.
 
 ### Evaluation criteria
 
