@@ -4,7 +4,7 @@ The goal of this test is to evaluate your ability to:
 
 1. Create an Algolia search index from a documentation website
 2. Provide a frontend search on top of it
-2. Write a tutorial on how to create such Algolia index
+3. Write a tutorial on how to create such Algolia index
 
 For this test you will need to create a [free Algolia account](https://www.algolia.com/users/sign_up).
 If you need an extended quota, reach out to me at maxime.locqueville@algolia.com.
