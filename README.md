@@ -57,7 +57,7 @@ Only 1 result should be displayed for a given page (best record of the page shou
 
 - An HTML page. Extra CSS and JS files are allowed but not mandatory. You also don't have to add a build step or transpile anything if you use ES6+.
 
-## 3. Write a tutorial about step 1.
+## 3. Write a tutorial about step 1
 
 ### Instructions
 
