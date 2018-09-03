@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head></head>
+<body>
+<h1><a id="Algolia_and_Laravel_Scout_0"></a>Algolia and Laravel Scout</h1>
+<h2><a id="Introducing_Laravel_Scout_2"></a>Introducing Laravel Scout</h2>
+<p>With the addition of <a href="https://mattstauffer.co/blog/introducing-laravel-scout">Laravel Scout</a>,<br>
+    Laravel has provided an easy interface into Algolia’s API Client, greatly simplifying<br>
+    your use of Algolia within the framework.</p>
+<p>Though Scout is designed to work with any engine, it was actually built with Algolia in mind.<br>
+    At the time of this writing, Algolia is the only search engine that<br>
+    <a href="https://laravel.com/docs/scout#introduction">Laravel officially supports</a>.</p>
+<p>For these reasons, we encourage you to start using Scout for all of your Algolia<br>
+    data indexing and synchronization. As for building UIs, we discuss your options below.</p>
+<p>If you want see some code, we built an example project showcasing some of the feature<br>
+    of Algolia and Laravel Scout:<br>
+    <a href="https://github.com/algolia/algoliasearch-laravel-example">https://github.com/algolia/algoliasearch-laravel-example</a>
+</p>
+<h2><a id="Regarding_documentation_19"></a>Regarding documentation</h2>
+<p>Laravel has written <a href="https://laravel.com/docs/scout">excellent online documentation</a><br>
+    to go along with its release of Scout. They go into great detail on how to use the<br>
+    Scout interface. Additionally, there are <a
+            href="https://laracasts.com/series/search-as-a-service">Laracasts</a><br>
+    that can help you get started with Scout and Algolia. These resources should be<br>
+    sufficient not only to help you get started, but to implement Algolia in the best<br>
+    possible way within the Laravel framework.</p>
+<p>One of our goals here is to complement Laravel’s documentation by anticipating<br>
+    questions you might have after reading Laravel’s documentation. We touch on some<br>
+    of the same material, adding our point of view to such subjects as<br>
+    <a href="/doc/api-client/laravel/install/">installation</a>, <a href="/doc/api-client/laravel/indexing/">managing
+        indices</a>,<br>
+    and others.</p>
+<p>Of equal interest, we show you how to <a href="/doc/api-client/laravel/extending-scout/">extend Scout</a><br>
+    with callbacks and extended devices, and how to use the <a
+            href="/doc/api-client/laravel/extending-scout/#using-macros">Macros</a><br>
+    we have written to simplify your code. We also provide <a
+            href="/doc/tutorials/getting-started/getting-started-with-laravel-scout-vuejs/">tutorials</a> that
+    showcase<br>
+    special use cases, like geo-awareness.</p>
+<h2><a id="The_client_side_of_Laravel_40"></a>The client side of Laravel</h2>
+<p>Putting aside data indexing operations, which are done on your servers, we recommend<br>
+    that your search operations be done directly on the client-side, using JavaScript.<br>
+    This will significantly improve your search response times, and reduce the load and traffic on your servers.</p>
+<p>Both Laravel and Algolia make working with JavaScript easy, with or without a JS framework.<br>
+    We will show you how to quickly build rich UIs, by taking you through our<br>
+    <a href="https://community.algolia.com/instantsearch.js/v2/">instant search package</a>,<br>
+    which is a full UI solution with versions for Vue JS, React JS, and simple native JS.<br>
+    Once plugged in, instant search will give your website immediate access to such<br>
+    features (or <a href="https://community.algolia.com/instantsearch.js/v2/widgets.html">widgets</a>)<br>
+    as formatted results, filtering &amp; faceting, pagination, infinite scrolling, and many other UI components.</p>
+<h2><a id="Looking_for_the_legacy_package_54"></a>Looking for the legacy package?</h2>
+<p>Before Scout came out, we had built our own Laravel integration. However, given the<br>
+    benefits of Scout, and its compatibility with Algolia, we really encourage you to switch over to Scout.</p>
+<p>If you are still using our previous package, you can access its documentation here<br>
+    in the <a href="https://github.com/algolia/algoliasearch-laravel">Readme of the package</a>.</p>
+</body>
+</html>

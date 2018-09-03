@@ -2,7 +2,7 @@
 
 The goal of this test is to evaluate your ability to:
 
-1. Create an Algolia search index from a documentation website
+1. Create an Algolia search index from a html pages
 2. Provide a frontend search on top of it
 3. Write a tutorial on how to create such Algolia index
 
@@ -15,16 +15,17 @@ The test is comprised of three parts:
 
 ### Instructions
 
-In the docs/ folder you have a copy of our [middleman](https://middlemanapp.com/basics/install/)
-based [DocSearch website](https://community.algolia.com/docsearch/).
+In the source/ folder you have 4 html files. 
 
-There's a [skeleton command](./docs/extensions/indexer_command.rb) (in `doc-engineer-assignment/docs/extensions/indexer_command.rb`) that takes care of the interfacing with middleman and is already looping through doc pages only.
-This middleman command can be run via the following bash command `bundle exec middleman algolia` from the docs directory.
-
-**Your goal**: complete this command to make it index the documentation content into Algolia.
-Each page must be split in several records using the method explained in the
-[following blog post](https://blog.algolia.com/how-to-build-a-helpful-search-for-technical-documentation-the-laravel-example/).
+The goal of this exercise to create an algolia index for those 4 pages.
+Each page must be split in several records using the method explained
+in the [following blog post](https://blog.algolia.com/how-to-build-a-helpful-search-for-technical-documentation-the-laravel-example/).
 To do the split you will need to use an html parser library.
+
+You can use any of the following programing languages: php, ruby, javascript, python.
+
+Here is the docs to their respective algolia api client:
+[php](https://www.algolia.com/doc/api-client/php/getting-started/), [ruby](https://www.algolia.com/doc/api-client/ruby/getting-started/), [javascript](https://www.algolia.com/doc/api-client/javascript/getting-started/), [python](https://www.algolia.com/doc/api-client/python/getting-started/)
 
 ### Evaluation criteria
 
@@ -33,7 +34,7 @@ To do the split you will need to use an html parser library.
 
 ### Deliverable
 
-- The updated indexer_command.rb file
+- A file that contains the source code of the indexing. 
 
 ## 2. Search frontend
 
@@ -51,19 +52,17 @@ Only 1 result should be displayed for a given page (best record of the page shou
 - The right [search parameters](https://www.algolia.com/doc/api-reference/search-api-parameters/) are being used
 - Design will not be taken into account in the evaluation.  
   We are expecting a very basic display of the information nothing more.
-- No links handling is needed.
-- Ease of running of the demo.
 
 ### Deliverable
 
-- An html page.
+- a html page. An extra css file and a extra js file are allowed but not mandatory
 
 ## 3. Write a tutorial about step 1.
 
 ### Instructions
 
 Based on what you did in the step 1., write a tutorial explaining the process of splitting
-html pages using ruby.
+html pages (with the language that you choose).
 
 ### Evaluation criteria
 

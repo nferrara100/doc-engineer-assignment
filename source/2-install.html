@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head></head>
+<body>
+<h1><a id="Install_0"></a>Install</h1>
+<h2><a id="Install_the_algoliascout_package_2"></a>Install the algolia/scout package</h2>
+<p>First, install Scout and Algolia’s API client via composer</p>
+<pre><code>composer require laravel/scout
+composer require algolia/algoliasearch-client-php
+</code></pre>
+<h2><a id="Enabling_scout_11"></a>Enabling scout</h2>
+<p>If you use Laravel 5.5, the package will be discovered automatically.</p>
+<p>If you use a version &lt;5.5, the service provider should be added to the <code>providers</code> array in the <code>config/app.php</code> file.</p>
+<pre><code class="language-php">Laravel\Scout\ScoutServiceProvider::class,
+</code></pre>
+<h2><a id="Configuring_scout_22"></a>Configuring scout</h2>
+<p>Finally, you will need to publish the configuration file. This command will create a <code>scout.php</code> configuration file in your config directory.</p>
+<pre><code class="language-php">php artisan vendor:publish --provider=<span class="hljs-string">"Laravel\Scout\ScoutServiceProvider"</span>
+</code></pre>
+<h2><a id="Configure_API_Keys_30"></a>Configure API Keys</h2>
+<p>You can set the keys directly inside the <code>scout.php</code> file that we just published but<br>
+    we recommend rather that you set the credentials (APP_ID and API Key) inside the <code>.env</code> file by adding the following content:</p>
+<pre><code>ALGOLIA_APP_ID=YourApplicationID
+ALGOLIA_SECRET=YourAPIKey
+</code></pre>
+</body>
+</html>

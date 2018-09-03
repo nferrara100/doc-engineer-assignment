@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head></head>
+<body>
+<h1><a id="Options_0"></a>Options</h1>
+<h2><a id="Custom_index_name_2"></a>Custom index name</h2>
+<p>Laravel Scout provides a simple way to customize the index name. You can implement<br>
+    the <a href="https://laravel.com/docs/scout#configuring-model-indexes"><code>searchableAs</code></a> method.</p>
+<p>By default, the <code>searchableAs</code> method concatenates the <code>prefix</code> configuration key defined in <code>config/scout.php</code> and the table name.</p>
+<p>Note that the settings package mentioned above will use this name.</p>
+<pre><code class="language-php"><span class="hljs-preprocessor">&lt;?php</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">Laravel</span>\<span class="hljs-title">Scout</span>\<span class="hljs-title">Searchable</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Database</span>\<span class="hljs-title">Eloquent</span>\<span class="hljs-title">Model</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Contact</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Model</span>
+</span>{
+    <span class="hljs-keyword">use</span> <span class="hljs-title">Searchable</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">searchableAs</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> config(<span class="hljs-string">'scout.prefix'</span>).<span class="hljs-string">'custom_name'</span>;
+    }
+}
+
+</code></pre>
+<h3><a id="Perenvironment_index_name_31"></a>Per-environment index name</h3>
+<p>Scout reads the prefix from you environment variables. Hence, if you need to have different indices for each environment, you only need to define a different <code>PREFIX</code> in your <code>.env</code> file.</p>
+<pre><code class="language-bash">SCOUT_PREFIX=demo_PROD_
+</code></pre>
+<h2><a id="Pause_indexing_40"></a>Pause indexing</h2>
+<p>Laravel Scout documentation shows a nice way to modify a searchable model<br>
+    without triggering indexing calls <a href="https://laravel.com/docs/scout#pausing-indexing">using a callback</a>.</p>
+<p>There is also a static method you can use to disable/enable syncing. This<br>
+    is especially useful if you’re going to do many SQL queries to modify content. Once it’s<br>
+    done, you can sync what you modified manually.</p>
+<p>For example, in your <code>DatabaseSeeder</code> class.</p>
+<pre><code class="language-php"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DatabaseSeeder</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Seeder</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span><span class="hljs-params">()</span>
+    </span>{
+        \App\Post::disableSearchSyncing();
+
+        <span class="hljs-variable">$this</span>-&gt;call(AuthorSeeder::class);
+        <span class="hljs-variable">$this</span>-&gt;call(PostSeeder::class);
+
+        \App\Author::all()-&gt;searchable();
+        \App\Post::all()-&gt;searchable();
+
+        \App\Post::enableSearchSyncing();
+    }
+}
+</code></pre>
+</body>
+</html>

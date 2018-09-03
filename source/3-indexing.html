@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head></head>
+<body>
+<h2><a id="Indexing_0"></a>Indexing</h2>
+<h3><a id="Make_a_model_searchable_2"></a>Make a model searchable</h3>
+<p>Add the <code>Laravel\Scout\Searchable</code> trait to the model you would like to make searchable.</p>
+<pre><code class="language-php"><span class="hljs-preprocessor">&lt;?php</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Database</span>\<span class="hljs-title">Eloquent</span>\<span class="hljs-title">Model</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Laravel</span>\<span class="hljs-title">Scout</span>\<span class="hljs-title">Searchable</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Contact</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Model</span>
+</span>{
+    <span class="hljs-keyword">use</span> <span class="hljs-title">Searchable</span>;
+}
+</code></pre>
+<h3><a id="Keep_data_in_sync_20"></a>Keep data in sync</h3>
+<p>Every time you modify a model, Laravel emits an event. Scout is listening for that<br>
+    event, to inform your app to make an HTTP call to Algolia to update its index.</p>
+<p>You don’t have anything else to do; just use your Eloquent model the way you<br>
+    normally would do. For example, in a controller you may have:</p>
+<pre><code class="language-php"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ContactController</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">update</span><span class="hljs-params">(Request <span class="hljs-variable">$request</span>)</span>
+    </span>{
+        <span class="hljs-variable">$contact</span> = Contact::find(<span class="hljs-variable">$request</span>-&gt;get(<span class="hljs-string">'id'</span>));
+        <span class="hljs-variable">$contact</span>-&gt;name = <span class="hljs-variable">$request</span>-&gt;get(<span class="hljs-string">'new_name'</span>);
+        <span class="hljs-variable">$contact</span>-&gt;update(); <span class="hljs-comment">//  &lt;== will trigger HTTP call to Algolia</span>
+                            <span class="hljs-comment">//      after the model is saved in DB</span>
+
+        <span class="hljs-comment">// ...</span>
+    }
+}
+</code></pre>
+<p>It’s important to note that the data will not be synced when using <a href="https://laravel.com/docs/eloquent#mass-assignment">mass assignement</a> methods, since the <code>saved</code> and <code>updated</code> events won’t be dispatched.<br>
+    {:.alert alert-info}</p>
+<h2><a id="Manual_indexing_47"></a>Manual indexing</h2>
+<p>The following section only works with classes using the <code>Laravel\Scout\Searchable</code> trait.</p>
+<h3><a id="Indexing_51"></a>Indexing</h3>
+<p>When setting up Laravel Scout, you probably have existing data that you would like to import. There is an artisan command to import data. The command takes a model as parameter, so it has to be launched for each model class.</p>
+<pre><code>php artisan scout:import &quot;App\Contact&quot;
+</code></pre>
+<h3><a id="Flushing_and_clearing_59"></a>Flushing and clearing</h3>
+<p>A similar command exists to flush the data from Algolia’s index. It’s important to note that the <code>flush</code> command only deletes data existing in your local database. It doesn’t clear the index.</p>
+<p>For instance, if you indexed data that you manually deleted from your local database, the flush command will not be able to delete them. In this case it’s better to clear the index from your Algolia dashboad.</p>
+<pre><code>php artisan scout:flush &quot;App\Contact&quot;
+</code></pre>
+<h2><a id="Customizing_records_70"></a>Customizing records</h2>
+<p>Scout will transform your model into Algolia records with the <code>toSearchableArray</code> method. You can override this method to customize what data you want to index. By default, the method returns the entire <code>toArray</code> form of a given model.</p>
+<p>In the following example, we assume that we have this entry returned by the default method:</p>
+<pre><code class="language-json">{
+    "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-string">"1"</span></span>,
+    "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Paul"</span></span>,
+    "<span class="hljs-attribute">tags</span>": <span class="hljs-value"><span class="hljs-string">"pro;partner"</span></span>,
+    "<span class="hljs-attribute">created_at</span>": <span class="hljs-value"><span class="hljs-string">"2017-07-01 15:00:04"</span></span>,
+    "<span class="hljs-attribute">updated_at</span>": <span class="hljs-value"><span class="hljs-string">"2017-07-02 03:00:00"</span>
+</span>}
+</code></pre>
+<p>In order to modify some attribute, we’ll override the <code>toSearchableArray</code> method.</p>
+<pre><code class="language-php"><span class="hljs-preprocessor">&lt;?php</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>;
+
+<span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Database</span>\<span class="hljs-title">Eloquent</span>\<span class="hljs-title">Model</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">Laravel</span>\<span class="hljs-title">Scout</span>\<span class="hljs-title">Searchable</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Contact</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Model</span>
+</span>{
+    <span class="hljs-keyword">use</span> <span class="hljs-title">Searchable</span>;
+
+    <span class="hljs-comment">/**
+     * Get the indexable data array for the model.
+     *
+     * <span class="hljs-doctag">@return</span> array
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">toSearchableArray</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-variable">$record</span> = <span class="hljs-variable">$this</span>-&gt;toArray();
+
+        <span class="hljs-variable">$record</span>[<span class="hljs-string">'_tags'</span>] = explode(<span class="hljs-string">';'</span>, <span class="hljs-variable">$this</span>-&gt;tags);
+
+        <span class="hljs-variable">$record</span>[<span class="hljs-string">'added_month'</span>] = substr(<span class="hljs-variable">$record</span>[<span class="hljs-string">'created_at'</span>], <span class="hljs-number">0</span>, <span class="hljs-number">7</span>);
+
+        <span class="hljs-keyword">unset</span>(<span class="hljs-variable">$record</span>[<span class="hljs-string">'tags'</span>], <span class="hljs-variable">$record</span>[<span class="hljs-string">'created_at'</span>], <span class="hljs-variable">$record</span>[<span class="hljs-string">'updated_at'</span>]);
+
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$record</span>;
+    }
+}
+</code></pre>
+<p>In the end, we get:</p>
+<pre><code class="language-json">{
+    "<span class="hljs-attribute">id</span>": <span class="hljs-value"><span class="hljs-string">"1"</span></span>,
+    "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Paul"</span></span>,
+    "<span class="hljs-attribute">_tags</span>": <span class="hljs-value">[<span class="hljs-string">"pro"</span>, <span class="hljs-string">"partner"</span>]</span>,
+    "<span class="hljs-attribute">added_month</span>": <span class="hljs-value"><span class="hljs-string">"2017-07"</span>
+</span>}
+</code></pre>
+</body>
+</html>
