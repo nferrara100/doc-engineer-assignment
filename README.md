@@ -7,7 +7,7 @@ The goal of this test is to evaluate your ability to:
 3. [Write a tutorial](https://github.com/algolia/doc-engineer-assignment#3-write-a-tutorial-about-step-1) on how to create the Algolia index
 
 For this test, you will need to create a [free Algolia account](https://www.algolia.com/users/sign_up).
-If you have any problems creating an account, or if you need an extended quota, reach out to me at maxime.locqueville@algolia.com.
+If you have any problems creating an account, or you need an extended quota, reach out to me at maxime.locqueville@algolia.com.
 
 The test is comprised of 3 parts:
 
