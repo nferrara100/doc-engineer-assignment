@@ -2,12 +2,12 @@
 
 The goal of this test is to evaluate your ability to:
 
-1. Create an Algolia search index from HTML pages
-2. Provide a front-end search on top of it
-3. Write a tutorial on how to create the Algolia index
+1. [Create an Algolia search index](https://github.com/algolia/doc-engineer-assignment#1-indexing) from HTML pages
+2. [Provide a front-end search](https://github.com/algolia/doc-engineer-assignment#2-search-front-end) on top of it
+3. [Write a tutorial](https://github.com/algolia/doc-engineer-assignment#3-write-a-tutorial-about-step-1) on how to create the Algolia index
 
 For this test, you will need to create a [free Algolia account](https://www.algolia.com/users/sign_up).
-If you need an extended quota, reach out to me at maxime.locqueville@algolia.com.
+If you have any problems creating an account, or if you need an extended quota, reach out to me at maxime.locqueville@algolia.com.
 
 The test is comprised of 3 parts:
 
@@ -22,9 +22,9 @@ Each page must be split into several records using the method explained
 in the [following blog post](https://blog.algolia.com/how-to-build-a-helpful-search-for-technical-documentation-the-laravel-example/).
 To do the split, you will need to use an HTML parser library.
 
-You can use any of the following programing languages: PHP, Ruby, JavaScript or Python.
+You can use any one of the following programing languages: PHP, Ruby, JavaScript or Python.
 
-Here are the docs to their respective Algolia API clientc:
+Here are the docs to their respective Algolia API clients:
 [PHP](https://www.algolia.com/doc/api-client/php/getting-started/), [Ruby](https://www.algolia.com/doc/api-client/ruby/getting-started/), [JavaScript](https://www.algolia.com/doc/api-client/javascript/getting-started/), [Python](https://www.algolia.com/doc/api-client/python/getting-started/).
 
 ### Evaluation criteria
@@ -43,7 +43,7 @@ Here are the docs to their respective Algolia API clientc:
 Using [InstantSearch.js](https://community.algolia.com/instantsearch.js/v2/),
 implement a front-end search based on the index created in step 1.
 
-Since we split the records we now have several records for each page.
+As described in the above-referenced blog, you will be creating several records for each page.
 Only 1 result should be displayed for a given page (best record of the page should be displayed).  
 
 ### Evaluation criteria
