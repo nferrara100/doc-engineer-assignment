@@ -24,17 +24,12 @@ class DocParser(HTMLParser):
         self.unwanted = False
         HTMLParser.__init__(self)
 
-    def get_current_text(self):
-        text = self.current_text.strip()
-        # text = re.sub(r'(\<\w*\>)', '', text)
-        return text
-
     def handle_starttag(self, tag, attrs):
         if tag in self.wanted_tags:
             if self.current_text.strip() != "":
                 res = self.algolia.index.add_object({"link": self.page, "line": self.position,
                                                      "importance": 4 + self.wanted_tags.index(self.current_tag),
-                                                     "text": self.get_current_text()})
+                                                     "content": self.get_current_text.strip()})
             self.unwanted = False
             self.position = self.getpos()[0]
             self.current_tag = tag.lower()
@@ -46,8 +41,8 @@ class DocParser(HTMLParser):
             self.unwanted = False
             if self.current_text.strip() != "":
                 res = self.algolia.index.add_object({"link": self.page, "line": self.position,
-                                                     "importance": self.wanted_tags.index(self.current_tag), "tag": tag,
-                                                     "text": self.get_current_text()})
+                                                     "importance": self.wanted_tags.index(self.current_tag),
+                                                     self.current_tag: self.get_current_text.strip()})
             self.current_text = ''
 
     def handle_data(self, data):
