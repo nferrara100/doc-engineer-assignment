@@ -2,6 +2,7 @@ from algoliasearch import algoliasearch
 from config import Config
 from html.parser import HTMLParser
 import os
+import re
 
 
 class Algolia:
@@ -14,8 +15,7 @@ class DocParser(HTMLParser):
     current_tag = ''
     current_text = ''
     wanted_tags = ['h1', 'h2', 'h3', 'h4']
-    unwanted_tags = ['canvas', 'data', 'datalist', 'map', 'meta', 'object', 'param', 'script', 'source', 'style',
-                     'video']
+    unwanted_tags = ['audio', 'canvas', 'map', 'meta', 'object', 'script', 'source', 'style', 'video']
 
     def __init__(self, algolia, page):
         self.algolia = algolia
@@ -24,11 +24,17 @@ class DocParser(HTMLParser):
         self.unwanted = False
         HTMLParser.__init__(self)
 
+    def get_current_text(self):
+        text = self.current_text.strip()
+        # text = re.sub(r'(\<\w*\>)', '', text)
+        return text
+
     def handle_starttag(self, tag, attrs):
         if tag in self.wanted_tags:
             if self.current_text.strip() != "":
-                res = self.algolia.index.add_object({"page": self.page, "line": self.position, "tag": "p",
-                                                     "super": self.current_tag, "text": self.current_text.strip()})
+                res = self.algolia.index.add_object({"link": self.page, "line": self.position,
+                                                     "importance": 4 + self.wanted_tags.index(self.current_tag),
+                                                     "text": self.get_current_text()})
             self.unwanted = False
             self.position = self.getpos()[0]
             self.current_tag = tag.lower()
@@ -39,8 +45,9 @@ class DocParser(HTMLParser):
         if tag in self.wanted_tags:
             self.unwanted = False
             if self.current_text.strip() != "":
-                res = self.algolia.index.add_object({"page": self.page, "line": self.position, "tag": tag,
-                                                 "text": self.current_text.strip()})
+                res = self.algolia.index.add_object({"link": self.page, "line": self.position,
+                                                     "importance": self.wanted_tags.index(self.current_tag), "tag": tag,
+                                                     "text": self.get_current_text()})
             self.current_text = ''
 
     def handle_data(self, data):
