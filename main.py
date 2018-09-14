@@ -9,29 +9,21 @@ import os
 
 
 class DocParser(HTMLParser):
-    current_tag = []
+    current_tag = ''
+    current_text = ''
     wanted_tags = ['h1', 'h2', 'h3', 'h4', 'p']
 
     def handle_starttag(self, tag, attrs):
         if tag in self.wanted_tags:
-            self.current_tag.append([tag.lower(), ''])
+            print(self.current_tag + " : " + self.current_text)
+            self.current_tag = tag.lower()
 
     def handle_endtag(self, tag):
         if tag in self.wanted_tags:
-            try:
-                if tag == self.current_tag[-1:][0]:
-                    print(tag + " : " + self.current_tag[-1:][1])
-                self.current_tag.pop()
-            except IndexError:
-                # pass
-                raise IndexError('There is an unknown endtag in the HTML. Remove it and try again.')
+            pass
 
     def handle_data(self, data):
-        try:
-            self.current_tag[-1:][1] += data
-        except IndexError:
-            pass
-            # print("The following text is not nested in the HTML and was not indexed: " + data)
+        self.current_text += data
 
 
 parser = DocParser()
