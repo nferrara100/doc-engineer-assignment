@@ -20,7 +20,7 @@ class DocParser(HTMLParser):
     def __init__(self, algolia, page):
         self.algolia = algolia
         self.page = page.replace(os.sep, '/')
-        self.link = self.page
+        self.hash = ''
         self.position = False
         self.unwanted = False
         self.importance = -1
@@ -33,12 +33,12 @@ class DocParser(HTMLParser):
             self.position = False
             self.unwanted = False
             self.current_tag = tag
-            self.link = self.page
+            self.hash = ''
             self.importance = self.wanted_tags.index(self.current_tag)
         elif tag == 'a' and self.position is False:
             for name, value in attrs:
                 if name == 'id':
-                    self.link += '#' + value
+                    self.hash = value
                     self.position = True
         elif tag in self.unwanted_tags:
             self.unwanted = True
@@ -55,7 +55,7 @@ class DocParser(HTMLParser):
 
     def save_record(self, content=''):
         if self.current_text.strip() != "":
-            obj = {"link": self.link, "importance": self.importance}
+            obj = {"link": self.page, "hash": self.hash, "importance": self.importance}
             for i in range(self.importance + 1):
                 obj[self.wanted_tags[i]] = self.headings[i]
             if content != '':
@@ -74,6 +74,11 @@ def index_files():
                 with open(filename, 'r') as webpage:
                     parser = DocParser(algolia, filename)
                     parser.feed(webpage.read())
+
+    algolia.index.set_settings({
+        'attributeForDistinct': 'link',
+        'distinct': 1
+    })
 
 
 if __name__ == "__main__":

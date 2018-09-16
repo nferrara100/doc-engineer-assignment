@@ -1,42 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
 <head>
-    <meta charset="UTF-8">
-    <title>Doc Test</title>
-    <link rel="stylesheet" type="text/css"
-          href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.2/dist/instantsearch.min.css">
-    <link rel="stylesheet" type="text/css"
-          href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.2/dist/instantsearch-theme-algolia.min.css">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.2"></script>
-
+  <meta charset="UTF-8">
+  <title>InstantSearch Demo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.3/dist/instantsearch.min.css">
+  <!-- Always use `2.x` versions in production rather than `2` to mitigate any side effects on your website,
+  Find the latest version on InstantSearch.js website: https://community.algolia.com/instantsearch.js/v2/guides/usage.html -->
+  <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-<h1>My page</h1>
-
-<div id="search-box">
-  <!-- SearchBox widget will appear here -->
-</div>
-
-<div id="hits">
-  <!-- Hits widget will appear here -->
-</div>
-
-<div id="refinement-list">
-  <!-- RefinementList widget will appear here -->
-</div>
-
-<div id="current-refined-values">
-  <!-- CurrentRefinedValues widget will appear here -->
-</div>
-
-<div id="clear-all">
-  <!-- ClearAll widget will appear here -->
-</div>
-
-<div id="pagination">
-  <!-- Pagination widget will appear here -->
-</div>
-<script src="main.js"></script>
+  <header>
+    <div>
+       <input id="search-input" placeholder="Search the docs">
+       <!-- We use a specific placeholder in the input to guides users in their search. -->
+    </div>
+  </header>
+  <main>
+      <div id="hits"></div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.3/dist/instantsearch.min.js"></script>
+  <script src="app.js"></script>
 </body>
-</html>
