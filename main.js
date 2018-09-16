@@ -5,14 +5,6 @@ const search = instantsearch({
     routing: true
 });
 
-  // initialize RefinementList
-  search.addWidget(
-    instantsearch.widgets.refinementList({
-      container: '#refinement-list',
-      attributeName: 'categories'
-    })
-  );
-
   // initialize SearchBox
   search.addWidget(
     instantsearch.widgets.searchBox({
@@ -21,36 +13,19 @@ const search = instantsearch({
     })
   );
 
+  const hitTemplate = '<a href="{{{link}}}">{{{h1}}}' +
+      '</a><br/>{{{h2}}}<br/><br/>'
+
+
   search.addWidget(
     instantsearch.widgets.hits({
       container: '#hits',
       templates: {
         empty: 'No results',
-        item: '<em>Hit {{importance}}</em>: {{{_highlightResult.content.value}}}'
+        item: hitTemplate
       }
     })
   );
-
-// initialize currentRefinedValues
-search.addWidget(
-instantsearch.widgets.currentRefinedValues({
-  container: '#current-refined-values',
-  // This widget can also contain a clear all link to remove all filters,
-  // we disable it in this example since we use `clearAll` widget on its own.
-  clearAll: false
-})
-);
-
-// initialize clearAll
-search.addWidget(
-instantsearch.widgets.clearAll({
-  container: '#clear-all',
-  templates: {
-    link: 'Reset everything'
-  },
-  autoHideContainer: false
-})
-);
 
 // initialize pagination
 search.addWidget(
