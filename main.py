@@ -77,7 +77,11 @@ def index_files():
 
     algolia.index.set_settings({
         'attributeForDistinct': 'link',
-        'distinct': 1
+        'distinct': 1,
+        'attributesToSnippet': [
+            'content:30'
+        ],
+        'snippetEllipsisText': '…'
     })
 
 

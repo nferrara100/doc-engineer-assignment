@@ -538,3 +538,7 @@ footer a:hover {
   text-decoration: underline;
   color: #ed5565;
 }
+
+em {
+   font-weight: bold;
+}
