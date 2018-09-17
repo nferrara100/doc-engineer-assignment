@@ -17,14 +17,20 @@ function formatHit(hit) {
     const tags = ['h1', 'h2', 'h3', 'h4', 'content'];
     var formatted = '<a href="' + hit.link + '#' + hit.hash + '">';
     var linked = false;
-    for(let i = 0; i < 2; i++){
+    for(let i = 0; i < 4; i++){
         if (hit[tags[i]]) {
-            formatted += hit._highlightResult[tags[i]].value + ' ';
-            if(!linked){
-                formatted += '</a><br />';
+            formatted += hit._highlightResult[tags[i]].value;
+            if (!linked) {
+                formatted += '</a><br /> ';
                 linked = true;
             }
+            else {
+                formatted += ": "
+            }
         }
+    }
+    if (hit.content) {
+        formatted += hit._snippetResult.content.value
     }
     return formatted + '<br /><br />';
 }

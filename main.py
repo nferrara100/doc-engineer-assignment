@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from algoliasearch import algoliasearch
 from config import Config
 from html.parser import HTMLParser
@@ -57,7 +59,8 @@ class DocParser(HTMLParser):
         if self.current_text.strip() != "":
             obj = {"link": self.page, "hash": self.hash, "importance": self.importance}
             for i in range(self.importance + 1):
-                obj[self.wanted_tags[i]] = self.headings[i]
+                if self.headings[i] != '':
+                    obj[self.wanted_tags[i]] = self.headings[i]
             if content != '':
                 obj['content'] = content
             res = self.algolia.index.add_object(obj)
@@ -71,7 +74,7 @@ def index_files():
         for i in range(len(file[2])):
             filename = file[0] + os.sep + file[2][i]
             if filename[-5:] == ".html":
-                with open(filename, 'r') as webpage:
+                with open(filename, 'r', encoding='utf-8') as webpage:
                     parser = DocParser(algolia, filename)
                     parser.feed(webpage.read())
 
@@ -79,7 +82,7 @@ def index_files():
         'attributeForDistinct': 'link',
         'distinct': 1,
         'attributesToSnippet': [
-            'content:30'
+            'content:20'
         ],
         'snippetEllipsisText': '…'
     })
