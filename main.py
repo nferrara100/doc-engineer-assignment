@@ -1,9 +1,8 @@
-# coding: utf-8
-
 from algoliasearch import algoliasearch
 from config import Config
 from html.parser import HTMLParser
 import os
+import time
 
 
 class Algolia:
@@ -26,6 +25,7 @@ class DocParser(HTMLParser):
         self.current_text = ''
         self.wanted_tags = ['h1', 'h2', 'h3', 'h4']
         self.unwanted_tags = ['audio', 'canvas', 'map', 'meta', 'object', 'script', 'source', 'style', 'video']
+        self.total_records = 0
         HTMLParser.__init__(self)
 
     def handle_starttag(self, tag, attrs):
@@ -57,19 +57,28 @@ class DocParser(HTMLParser):
 
     def save_record(self, content=''):
         if self.current_text.strip() != "":
-            obj = {"link": self.page, "hash": self.hash, "importance": self.importance}
+            record = {}
             for i in range(self.importance + 1):
                 if self.headings[i] != '':
-                    obj[self.wanted_tags[i]] = self.headings[i]
+                    record[self.wanted_tags[i]] = self.headings[i]
             if content != '':
-                obj['content'] = content
-            res = self.algolia.index.add_object(obj)
+                record['content'] = content
+            record['link'] = self.page
+            record['hash'] = self.hash
+            record['importance'] = self.importance
+            res = self.algolia.index.add_object(record)
+            if res['objectID']:
+                self.total_records += 1
+            else:
+                print("Error adding " + self.current_tag + " to Algolia's database")
             self.current_text = ''
 
 
 def index_files():
     folder = "source"
     algolia = Algolia()
+    total_records = 0
+    start_time = time.time()
     for file in os.walk(folder, followlinks=True):
         for i in range(len(file[2])):
             filename = file[0] + os.sep + file[2][i]
@@ -77,8 +86,9 @@ def index_files():
                 with open(filename, 'r', encoding='utf-8') as webpage:
                     parser = DocParser(algolia, filename)
                     parser.feed(webpage.read())
+                    total_records += parser.total_records
 
-    algolia.index.set_settings({
+    add_result = algolia.index.set_settings({
         'attributeForDistinct': 'link',
         'distinct': 1,
         'attributesToSnippet': [
@@ -86,6 +96,10 @@ def index_files():
         ],
         'snippetEllipsisText': '…'
     })
+    if not isinstance(add_result['taskID'], int):
+        print("Error creating new Algolia settings")
+
+    print("Added {:0d} records in {:0.4f} seconds.".format(total_records, (time.time() - start_time) / 1000))
 
 
 if __name__ == "__main__":
