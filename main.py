@@ -11,11 +11,6 @@ class Algolia:
 
 
 class DocParser(HTMLParser):
-    current_tag = ''
-    current_text = ''
-    wanted_tags = ['h1', 'h2', 'h3', 'h4']
-    headings = ['', '', '', '']
-    unwanted_tags = ['audio', 'canvas', 'map', 'meta', 'object', 'script', 'source', 'style', 'video']
 
     def __init__(self, algolia, page):
         self.algolia = algolia
@@ -24,6 +19,11 @@ class DocParser(HTMLParser):
         self.position = False
         self.unwanted = False
         self.importance = -1
+        self.headings = ['', '', '', '']
+        self.current_tag = ''
+        self.current_text = ''
+        self.wanted_tags = ['h1', 'h2', 'h3', 'h4']
+        self.unwanted_tags = ['audio', 'canvas', 'map', 'meta', 'object', 'script', 'source', 'style', 'video']
         HTMLParser.__init__(self)
 
     def handle_starttag(self, tag, attrs):
@@ -46,7 +46,7 @@ class DocParser(HTMLParser):
     def handle_endtag(self, tag):
         if tag in self.wanted_tags:
             self.unwanted = False
-            self.headings[self.wanted_tags.index(self.current_tag)] = self.current_text.strip()
+            self.headings[self.importance] = self.current_text.strip()
             self.save_record()
 
     def handle_data(self, data):
