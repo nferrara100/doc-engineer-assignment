@@ -13,16 +13,28 @@ search.addWidget(
 	})
 );
 
-const hitTemplate = '<a href="{{link}}#{{hash}}">{{{h1}}}</a><br/> ' +
-    '{{{_highlightResult.h2.value}}} {{{_highlightResult.h3.value}}} {{{_highlightResult.h4.value}}} ' +
-    '{{{_snippetResult.content.value}}}<br/><br/>'
+function formatHit(hit) {
+    const tags = ['h1', 'h2', 'h3', 'h4', 'content'];
+    var formatted = '<a href="' + hit.link + '#' + hit.hash + '">';
+    var linked = false;
+    for(let i = 0; i < 2; i++){
+        if (hit[tags[i]]) {
+            formatted += hit._highlightResult[tags[i]].value + ' ';
+            if(!linked){
+                formatted += '</a><br />';
+                linked = true;
+            }
+        }
+    }
+    return formatted + '<br /><br />';
+}
 
 search.addWidget(
 	instantsearch.widgets.hits({
 		container: '#hits',
 		templates: {
 			empty: "We didn't find any results for the search <em>\"{{query}}\"</em>",
-			item: hitTemplate
+			item: hit => formatHit(hit)
 		}
 	})
 );
